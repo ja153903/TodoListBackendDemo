@@ -44,4 +44,28 @@ class TodoController(Resource):
                 "message": "Failed to insert a value"
             }, 500
 
+    def put(self):
+        data = request.get_json(force=True)
+        id = data["id"]
+        description = data["description"]
+
+        try:
+            session = get_session()
+
+            session.query(Todo) \
+                .filter(Todo.id == id) \
+                .update({
+                    "description": description
+                })
+
+            session.commit()
+
+            return {
+                "message": f"Entry with id #{id} has been updated with the following description: '{description}'"
+            }, 200
+        except:
+            return {
+                "message": f"Failed to update row with id #{id}"
+            }, 500
+
 
