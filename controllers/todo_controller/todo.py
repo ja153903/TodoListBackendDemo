@@ -47,6 +47,7 @@ class TodoController(Resource):
     def put(self):
         data = request.get_json(force=True)
         id = data["id"]
+        title = data["title"]
         description = data["description"]
 
         try:
@@ -55,6 +56,7 @@ class TodoController(Resource):
             session.query(Todo) \
                 .filter(Todo.id == id) \
                 .update({
+                    "title": title,
                     "description": description
                 })
 
